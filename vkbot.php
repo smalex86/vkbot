@@ -50,4 +50,3 @@ if ($botServer->getToken()) {
 	echo "<p>I've got working token! </p>\n";
 	echo "<p><a href='vkbot.php?get20users'>Получить список ссылок на профили 20 новых пользователей</a></p>";
 }
-?>

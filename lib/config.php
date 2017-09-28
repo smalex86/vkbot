@@ -2,8 +2,13 @@
 
 ## Главный конфигурационный файл
 
-if (!defined("PATH_SEPARATOR")) define("PATH_SEPARATOR", getenv("COMSPEC")? ";" : ":");
-if (!defined("DIRECTORY_SEPARATOR")) define("DIRECTORY_SEPARATOR ", "/");
+if (!defined("PATH_SEPARATOR")) {
+    define("PATH_SEPARATOR", getenv("COMSPEC")? ";" : ":");
+}
+if (!defined("DIRECTORY_SEPARATOR")) {
+    define("DIRECTORY_SEPARATOR ", "/");
+}
+
 ini_set("include_path", ini_get("include_path").PATH_SEPARATOR.dirname(__FILE__)); // папка lib
 ini_set("include_path", ini_get("include_path").PATH_SEPARATOR.dirname(dirname(__FILE__))); // корневая папка
 ini_set("include_path", ini_get("include_path").PATH_SEPARATOR.dirname(dirname(__FILE__)).'/include'); // папка include
@@ -25,11 +30,10 @@ define("DB_PREFIX", $secret['db']['prefix']);
 // константы вк
 define("VK_CLIENT_ID", $secret['vk']['clientId']); // идентификатор пользователя
 define("VK_REDIRECT_URI", $secret['vk']['redirectUri']); // uri для редиректа
+define("VK_SCOPE", $secret['vk']['scope']); // права доступа
 define("VK_CLIENT_SECRET", $secret['vk']['clientSecret']); // секретный ключ приложения
 define("VK_TARGET_GROUP", $secret['vk']['tagretGroupId']); // идентификатор целевой группы
 define("VK_TARGET_CITY_ID", $secret['vk']['targetCityId']); // идентификатор целевого города
 
 // удаляем секретную инфу из памяти
 unset($secret);
-
-?>
