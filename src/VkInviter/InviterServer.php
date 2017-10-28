@@ -1,4 +1,7 @@
 <?php
+namespace Smalex86\VkInviter;
+
+use Smalex86\Common\Logger;
 
 /**
  * Описание класса сервера бота для вк
@@ -6,20 +9,20 @@
  * @version 0.1
  *
  */
-class botServer {
+class InviterServer {
 
   private $db = null; // объект базы данных mysqli
   private $token = '';
 
   function __construct() {
-    require_once 'database.php';
-    $db = new database;
+    //require_once 'database.php';
+    $db = new \Smalex86\Common\Database;
     $this->db = $db->getMysqli();
     if (!$this->db) {
-      setLogMsg(1, __FILE__ . ' (' . __LINE__ . ') -> ' . __METHOD__ . ' : ' . ' -- Не удалось обратиться к объекту базы данных');
+      Logger::toLog(1, __FILE__ . ' (' . __LINE__ . ') -> ' . __METHOD__ . ' : ' . ' -- Не удалось обратиться к объекту базы данных');
       die('Не удалось обратиться к объекту базы данных');
     }
-    setLogMsg(3, __FILE__ . ' (' . __LINE__ . ') -> ' . __METHOD__ . ' : ' . ' -- Объект создан');
+    Logger::toLog(3, __FILE__ . ' (' . __LINE__ . ') -> ' . __METHOD__ . ' : ' . ' -- Объект создан');
   }
 
   /**
@@ -37,7 +40,7 @@ class botServer {
    */
   public function checkToken() {
     // проверяем токен в базе
-    require_once 'vkTokenDatabase.php';
+    require_once __DIR__ . '/include/vkTokenDatabase.php';
     if ($this->token = getToken()) {
       // если все хорошо, то возвращаем true
       return true;
@@ -46,7 +49,7 @@ class botServer {
       // в виде алгоритма по шагам
       /*include 'vkTokenCodeLink.php';*/
       /*return getNewCodeQuery();*/
-      include 'vkTokenQueryForm.php';
+      include __DIR__ . '/include/vkTokenQueryForm.php';
       return getNewTokenForm();
     }
   }

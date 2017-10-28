@@ -1,18 +1,28 @@
 <?php
+namespace Smalex86\VkInviter;
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
-ini_set('display_errors', 'On'); // показывать ошибки - на готовом продукте убрать
+include_once __DIR__ . '/vendor/autoload.php';
+include_once __DIR__ . '/config.php';
 
-header('Content-Type: text/html; charset=utf-8');
-include_once dirname(__FILE__) . '/lib/config.php';
-include_once 'logging.php';
+use Smalex86\Common\Logger;
 
-setLogMsg(3, __FILE__ . ' : ' . __LINE__ . ' -- POST = ' . var_export($_POST, true), 'getpost.log');
-setLogMsg(3, __FILE__ . ' : ' . __LINE__ . ' -- GET = ' . var_export($_GET, true), 'getpost.log');
+//header('Content-Type: text/html; charset=utf-8');
+
+echo Logger::getLogFolder();
+Logger::setLogFolder(__DIR__ . '/logs/');
+echo Logger::getLogFolder();
+
+Logger::toLog(3, __FILE__ . ' : ' . __LINE__ . ' -- POST = ' . var_export($_POST, true), 'getpost.log');
+Logger::toLog(3, __FILE__ . ' : ' . __LINE__ . ' -- GET = ' . var_export($_GET, true), 'getpost.log');
 $content = file_get_contents("php://input");
-setLogMsg(3, __FILE__ . ' : ' . __LINE__ . ' -- file_get_contents = ' . var_export($content, true), 'getpost.log');
+Logger::toLog(3, __FILE__ . ' : ' . __LINE__ . ' -- file_get_contents = ' . var_export($content, true), 'getpost.log');
 
-include_once 'botServer.php';
-$botServer = new botServer();
+$inviterServer = new inviterServer();
 
 
 
@@ -23,10 +33,10 @@ if (isset($_GET['code'])) {
 	var_dump($_GET['code']);
 	// если пришел запрос на формирование токена
 	// то формируем ссылку на получение токена и выполняем по ней переход
-	$botServer->setNewToken($_GET['code']);
+	$inviterServer->setNewToken($_GET['code']);
 }
 
-if (($checkToken = $botServer->checkToken()) !== true) {
+if (($checkToken = $inviterServer->checkToken()) !== true) {
 	// проблема с токеном, делаем запрос на получение нового
 	echo $checkToken . " \n";
 }
@@ -46,7 +56,7 @@ if (isset($_GET['get20users'])) {
 
 
 echo "<p>I am working. </p>\n";
-if ($botServer->getToken()) {
+if ($inviterServer->getToken()) {
 	echo "<p>I've got working token! </p>\n";
 	echo "<p><a href='vkbot.php?get20users'>Получить список ссылок на профили 20 новых пользователей</a></p>";
 }

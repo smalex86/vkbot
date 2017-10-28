@@ -1,5 +1,6 @@
 <?php
 
+namespace Smalex86\Common;
 /**
  * 
  * Описание класса объекта для подключения к субд mysqli
@@ -9,7 +10,7 @@
  * @version 1.1
  * 
  */
-class database {
+class Database {
 
   public $errno = 0; // код ошибки
   public $errstr = ''; // текст ошибки
@@ -21,7 +22,7 @@ class database {
    * реализует внутри себя подключение к бд и проверку на ошибки
    */
   function __construct() {
-    $this->mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWD, DB_NAME);		
+    $this->mysqli = new \mysqli(DB_HOST, DB_USERNAME, DB_PASSWD, DB_NAME);
     if ($this->mysqli->connect_error) {
       $this->errno = $this->mysqli->connect_errno;
       $this->errstr = $this->mysqli->connect_error;

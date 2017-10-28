@@ -1,0 +1,7 @@
+/autorization.txt
+/secret.php
+/logs/*.log
+/json.txt
+/nbproject/private/
+vendor
+/composer.phar
