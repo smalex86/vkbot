@@ -14,7 +14,7 @@ namespace Smalex86\Common;
 /**
  * Класс для логгирования информации
  * @author Alexandr Smirnov <mail_er@mail.ru>
- * @version 1.3
+ * @version 1.4
  */
 class Logger {
 
@@ -49,20 +49,88 @@ class Logger {
       $logFileName = self::$logfileDefault;
     }
     switch ($msgStatus) {
-      case 0: $msgStatusWord = 'IMPORTANT INFO';
+      case 0: $msgStatusWord =  'IMPORTANT INFO';
         break;
-      case 1: $msgStatusWord = 'ERROR';
+      case 1: $msgStatusWord =  'ERROR         ';
         break;
-      case 2: $msgStatusWord = 'WARNING';
+      case 2: $msgStatusWord =  'WARNING       ';
         break;
-      case 3: $msgStatusWord = 'DEBUG INFO';
+      case 3: $msgStatusWord =  'DEBUG INFO    ';
         break;
-      default: $msgStatusWord = 'UNKNOWN INFO';
+      default: $msgStatusWord = 'UNKNOWN INFO  ';
     }
     // записываем сообщение в файл
-    return file_put_contents(self::$folder . $logFileName, 
-            sprintf('%s :: %s :: %s' . PHP_EOL, date("Y-m-d H-i-s"), $msgStatusWord, $msg), 
+    return file_put_contents(realpath(self::$folder).'/'.$logFileName, 
+              sprintf('%s :: %s :: %s' . PHP_EOL, date("Y-m-d H-i-s"), $msgStatusWord, 
+                str_replace("\t", "", str_replace("\n", "", $msg))), 
             FILE_APPEND);
+  }
+  
+  public function __construct($status = 4, $logFileName = '', $folder = '') {
+    self::$status = $status;
+    if ($logFileName) {
+      self::$logfileDefault = $logFileName;
+    }
+    if ($folder) {
+      self::$folder = $folder;
+    }
+    return true;
+  }
+  
+  /**
+   * Сохраняет сообщение msg в логфайл logFileName или по умолчанию с уровнем важности status.
+   * Вызывается динамически.
+   * @param int $status
+   * @param string $msg
+   * @param string $logFileName
+   * @return string
+   */
+  public function toLogD($status, $msg, $logFileName = '') {
+    return self::toLog($status, $msg, $logFileName);
+  }
+  
+  /**
+   * Сохраняет важное сообщение msg в логфайл logFileName или по умолчанию.
+   * Вызывается динамически.
+   * @param string $msg
+   * @param string $logFileName
+   * @return boolean
+   */  
+  public function importantD($msg, $logFileName = '') {
+    return self::toLog(0, $msg, $logFileName);
+  }
+  
+  /**
+  * Сохраняет сообщение msg об ошибке в логфайл logFileName или по умолчанию.
+  * Вызывается динамически.
+  * @param string $msg
+  * @param string $logFileName
+  * @return boolean
+  */
+  public function errorD($msg, $logFileName = '') {
+    return self::toLog(1, $msg, $logFileName);
+  }
+  
+  /**
+   * Сохраняет сообщение msg уровня warning в логфайл logFileName или по умолчанию с уровнем важности status.
+   * Вызывается динамически.
+   * @param string $msg
+   * @param string $logFileName
+   * @return boolean
+   */  
+  public function warningD($msg, $logFileName = '') {
+    return self::toLog(2, $msg, $logFileName);
+  }
+  
+  /**
+   * Сохраняет сообщение msg уровня отладки в логфайл logFileName или по умолчанию.
+   * Вызывается динамически.
+   * @param string $msg
+   * @param string $logFileName
+   * @return boolean
+   */  
+  public function debugD($msg, $logFileName = '') {
+    return self::toLog(3, $msg, $logFileName);
   }
   
   /**
@@ -81,7 +149,7 @@ class Logger {
    * @return boolean
    */
   public static function setLogFolder($folder) {
-    self::$folder = $folder;
+    self::$folder = realpath($folder);
     return true;
   }
   

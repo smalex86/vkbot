@@ -22,12 +22,12 @@ function getToken() {
   $query = sprintf('select * from %ssetting_list where name = "access_token" limit 1', DB_PREFIX);
   Logger::toLog(0, __FILE__ . ' (' . __LINE__ . ') : query = ' . $query);
   $row = null;
-  if ($result = $inviterServer->getDB()->query($query)) {
+  if ($result = $inviterServer->getDB()->mysqli->query($query)) {
     $row = $result->fetch_assoc();
     Logger::toLog(3, __FILE__ . ' : ' . __LINE__ . ' -- result = ' . var_export($row, true));
     $result->close();
   } else {
-    Logger::toLog(3, __FILE__ . ' : ' . __LINE__ . ' -- result error = ' . $inviterServer->getDB()->error);
+    Logger::toLog(3, __FILE__ . ' : ' . __LINE__ . ' -- result error = ' . $inviterServer->getDB()->mysqli->error);
   }
   // если значение было обнаружено
   if ($row) {

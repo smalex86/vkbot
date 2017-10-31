@@ -50,7 +50,15 @@
   <div class="container" role="main">
       <div class="row">
         <div class="col-xs-12">
-          <?php echo $botServer->getText(); ?>
+          <?php echo $application->getSession()->checkPostMsg(); // вывод пост-сообщений ?>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <h3>Подключенные аккаунты</h3>
+          <?php echo $application->getAccountList()->getAccountListHtml(); ?>
+          <h3>Подключение аккаунта</h3>
+          <?php echo $application->getAccountList()->getAccountAddFormHtml(); ?>
         </div>  
       </div>
   </div>
@@ -62,7 +70,7 @@
         <!-- Код счетчиков -->
     <?php endif; ?>
   
-  <?php echo $botServer->getPageScriptList() ?>
+  <?php //echo $botServer->getPageScriptList() ?>
         
 </body>
 </html>

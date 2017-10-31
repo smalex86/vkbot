@@ -1,7 +1,8 @@
 <?php
 namespace Smalex86\VkInviter;
 
-use Smalex86\Common\Logger;
+use Smalex86\Common\BasicServer;
+use Smalex86\VkInviter\VkAccountList;
 
 /**
  * Описание класса сервера бота для вк
@@ -9,30 +10,64 @@ use Smalex86\Common\Logger;
  * @version 0.1
  *
  */
-class InviterServer {
+class InviterServer extends BasicServer {
 
-  private $db = null; // объект базы данных mysqli
   private $token = '';
-
-  function __construct() {
-    //require_once 'database.php';
-    $db = new \Smalex86\Common\Database;
-    $this->db = $db->getMysqli();
-    if (!$this->db) {
-      Logger::toLog(1, __FILE__ . ' (' . __LINE__ . ') -> ' . __METHOD__ . ' : ' . ' -- Не удалось обратиться к объекту базы данных');
-      die('Не удалось обратиться к объекту базы данных');
+  
+  private $accountList;
+  
+  public function __construct() {
+    $this->logger = $this->getLogger();
+  }
+  
+  public function getAccountList() {
+    if (!$this->accountList) {
+      $this->accountList = new VkAccountList;
+      if (!$this->accountList) {
+        $msg = 'Не удалось обратиться к объекту VkAccountList';
+        $this->getLogger()->errorD(__FILE__.':'.__LINE__.': '.$msg);
+        return null;
+      }
     }
-    Logger::toLog(3, __FILE__ . ' (' . __LINE__ . ') -> ' . __METHOD__ . ' : ' . ' -- Объект создан');
+    return $this->accountList;
   }
 
   /**
-   * метод-обертка для передачи ссылки на объект mysqli
-   * @return mysqli|boolean
+   * Метод для обработки пост-данных
+   * @return boolean
    */
-  public function getDB() {
-    return $this->db;
+  public function startActionManager() {
+    if ($_POST) {
+      foreach ($_POST as $field => $value) {
+        $this->logger->debugD(__FILE__.'('.__LINE__.'): Данные = '.var_export($value, true));
+        if (is_array($value)) {
+          // подключение требуемой библиотеки
+          $className = __NAMESPACE__ . '\\' . $field;
+          $this->logger->debugD(__FILE__.'('.__LINE__.'): Класс = '.$className);
+          $this->logger->debugD(__FILE__.'('.__LINE__.'): class exists = '.class_exists($className)); 
+          if (class_exists($className)) {
+            $obj = new $className;
+            if ($obj && method_exists($obj, 'processAction')) {
+              $obj->processAction($value);
+            } else {
+              $this->logger->warningD(__FILE__.'('.__LINE__.'): Класс '.$className.
+                      ' не имеет метода processAction, данные ('.var_export($value, true).
+                      ') не будут обработаны');
+            }
+          } else {
+            $this->logger->warningD(__FILE__.'('.__LINE__.'): Класс '.$className.
+                    ' не найден, данные ('.var_export($value, true).
+                    ') не будут обработаны');
+          }
+        }
+      }
+      // чтобы снова не вызывался обработчик массива пост, очищаем его
+      header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+    }
+    return FALSE;
   }
-
+  
+  
   /**
    * метод для проверки существования токена
    * если токен на найден, то пользователю выдается ссылка, по которой нужно перейти
@@ -90,5 +125,3 @@ class InviterServer {
   }
 	
 }
-
-?>
