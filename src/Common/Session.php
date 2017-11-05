@@ -12,7 +12,7 @@
 namespace Smalex86\Common;
 
 use Smalex86\Common\Logger;
-use Smalex86\Common\BasicFunctionObject as Functions;
+use Smalex86\Common\FunctionList as Functions;
 
 /**
  * Description of Session
@@ -154,9 +154,9 @@ class Session {
   
   /**
    * сохранение сообщений о выполнении обработчиков post
-   * @param string $url
    * @param string $msg
    * @param int $status
+   * @param string $url
    */
   public function setPostMessageToSession($msg, $status, $url = '') {
     // в сессию записать адрес страницы и сообщение
@@ -167,7 +167,7 @@ class Session {
       // проверка на наличие такого же сообщения в массиве session
       $add = 1;
       if (is_array(@$_SESSION['postMsg'])) {
-        foreach ($_SESSION['postMsg'] as $field => $value) {
+        foreach ($_SESSION['postMsg'] as $value) {
           if ($value['url'] == $url && $value['msg'] == $msg && $value['status'] == $status) {
             $add = 0;
             break;

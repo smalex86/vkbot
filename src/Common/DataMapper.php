@@ -12,15 +12,15 @@
 namespace Smalex86\Common;
 
 use Smalex86\Common\Logger;
-use Smalex86\Common\DatabaseObject;
+use Smalex86\Common\Database;
 use Smalex86\Common\Session;
 
 /**
- * Description of BasicDataMapper
+ * Description of DataMapper
  *
  * @author Alexandr Smirnov
  */
-abstract class BasicDataMapper {
+abstract class DataMapper {
   
   protected $logger; // объект логгирования
   protected $database; // объект бд
@@ -29,7 +29,7 @@ abstract class BasicDataMapper {
   public function __construct() {
     global $application;
     $this->logger = $application->getLogger();
-    $this->database = $application->getDatabaseObject();
+    $this->database = $application->getDatabase();
     $this->session = $application->getSession();
   }
   

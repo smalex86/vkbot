@@ -11,8 +11,6 @@
 
 namespace Smalex86\VkInviter;
 
-use Smalex86\Common\Logger;
-use Smalex86\Common\DatabaseObject;
 use Smalex86\VkInviter\VkAccountMapper;
 
 /**

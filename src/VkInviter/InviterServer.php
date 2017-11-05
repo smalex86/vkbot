@@ -1,7 +1,7 @@
 <?php
 namespace Smalex86\VkInviter;
 
-use Smalex86\Common\BasicServer;
+use Smalex86\Common\Server;
 use Smalex86\VkInviter\VkAccountList;
 
 /**
@@ -10,7 +10,7 @@ use Smalex86\VkInviter\VkAccountList;
  * @version 0.1
  *
  */
-class InviterServer extends BasicServer {
+class InviterServer extends Server {
 
   private $token = '';
   

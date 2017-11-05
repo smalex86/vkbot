@@ -1,0 +1,117 @@
+﻿.header {
+	height: 204px;
+	background: url("../images/head.png") no-repeat;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 10px;
+}
+
+.sitenameLead {
+	font-size: 32px;
+	margin-top: 15px;
+}
+
+.sitename {
+	font-size: 50px;
+}
+
+body {
+	background-color: #e3f4ed;
+	padding-top: 0px;
+	background-image: url("../images/pattern.png");
+}
+
+.navbar-collapse {
+	padding-left: 0px;
+}
+
+.scroll-head {
+	background: url("../images/scroll_head.png") no-repeat;
+	height: 45px;
+}
+
+.scroll-body {
+	background: url("../images/scroll_body.png") repeat-y;
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-bottom: 10px;
+}
+
+.scroll-footer {
+	background: url("../images/scroll_footer.png") no-repeat;
+	height: 45px;
+}
+
+.scroll-body-body {
+	padding-top: 20px;
+	margin-top: 10px;
+	background: url("../images/scroll-body-body.png") repeat-x;
+}
+
+.col-right {
+	padding-right: 30px;
+}
+
+.navbar .nav > li > a {
+	color: #000;
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    background-color: #BCF1B5;
+    color: #000;
+		background-image: none;
+}
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    background-color: #BCF1B5;
+    color: #000;
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+  color: #000;
+  background-color: transparent;
+	background-color: #BCF1B5;
+}
+
+.navbar-default {
+    background-color: #BCF1B5;
+    border-color: #e7e7e7;
+		background-image: linear-gradient(to bottom, #BCF1B5 0%, #6C9F67 100%);
+}
+
+.panel {
+	background-color: #BCF1B5;
+}
+
+.panel-default {
+    border-color: #E5D1AC;
+}
+
+.panel-default > .panel-heading {
+	background-color: #6C9F67;
+}
+
+.blog-post-meta {
+    color: #999999;
+    margin-bottom: 20px;
+}
+
+.blog-post-title {
+    font-size: 40px;
+    margin-bottom: 5px;
+}
+
+.blog-post {
+    margin-bottom: 60px;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    background-color: #6C9F67;
+    border-color: #E5D1AC;
+}
+
+.pagination > li > a, .pagination > li > span {
+    background-color: #FFFFFF;
+    border: 1px solid #E5D1AC;
+    color: #6C9F67;
+}

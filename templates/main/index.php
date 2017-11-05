@@ -28,7 +28,7 @@
         <title><?php /*echo $application->getPageTitle()*/ ?></title>
 
     <!-- Bootstrap core CSS -->
-    <link href="templates/css/bootstrap.min.css" rel="stylesheet">
+    <link href="templates/main/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     
@@ -42,7 +42,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="templates/js/bootstrap.js"></script>
+    <script src="templates/main/js/bootstrap.js"></script>
   </head>
 
 <body>

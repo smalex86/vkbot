@@ -12,11 +12,11 @@
 namespace Smalex86\Common;
 
 /**
- * Description of BasicFunctionObject
+ * Description of FunctionObject
  *
  * @author Alexandr Smirnov
  */
-class BasicFunctionObject {
+class FunctionList {
 
   /**
    * вычисление протокола сервера

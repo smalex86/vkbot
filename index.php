@@ -27,7 +27,8 @@ $application = new inviterServer(); // создание сервера
 $application->startActionManager(); // запуск обработки пост-данных
 $application->getSession()->checkPostData(); // проверка на наличие данных оставленных после неудачной пост обработки
 
-include('templates/main.php');
+include('templates/main/index.php');
+//include('templates/dashboard/index.php');
 
 
 /* --------------------------------------- Работа с токеном -------------- */

@@ -11,7 +11,7 @@
 
 namespace Smalex86\VkInviter;
 
-use Smalex86\Common\BasicDataMapper;
+use Smalex86\Common\DataMapper;
 use Smalex86\VkInviter\VkAccount;
 
 /**
@@ -19,7 +19,7 @@ use Smalex86\VkInviter\VkAccount;
  *
  * @author Александр
  */
-class VkAccountMapper extends BasicDataMapper {
+class VkAccountMapper extends DataMapper {
   
   protected function getTableName() {
     return 'vk_account';
@@ -91,7 +91,7 @@ class VkAccountMapper extends BasicDataMapper {
   protected function beforeInsertByData($data) {
     $this->logger->debugD(__FILE__.'('.__LINE__.') data = '.var_export($data, true));
     if (!empty($data['token'])) {
-      $data['token'] = $this->database->getMysql()->real_escape_string($data['token']);
+      $data['token'] = $this->database->getSafetyString($data['token']);
     }
     if (!is_numeric($data['expiresIn'])) {
       $data['expiresIn'] = 0;

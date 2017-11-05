@@ -18,7 +18,7 @@ use Smalex86\Common\Logger;
  *
  * @author Alexandr Smirnov
  */
-abstract class BasicActiveRecord {
+abstract class ActiveRecord {
   
   protected $logger;
 

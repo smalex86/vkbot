@@ -11,14 +11,14 @@
 
 namespace Smalex86\VkInviter;
 
-use Smalex86\Common\BasicActiveRecord;
+use Smalex86\Common\ActiveRecord;
 
 /**
  * Description of VkAccount
  *
  * @author Александр
  */
-class VkAccount extends BasicActiveRecord {
+class VkAccount extends ActiveRecord {
   
   public $vkaid = 0;
   public $password = '';

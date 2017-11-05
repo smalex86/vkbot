@@ -14,11 +14,11 @@ namespace Smalex86\Common;
 use Smalex86\Common\Logger;
 
 /**
- * Description of DatabaseObject
+ * Description of Database
  *
  * @author Alexandr Smirnov
  */
-class DatabaseObject {
+class Database {
   
   public $errno = 0; // код ошибки
   public $errstr = ''; // текст ошибки
@@ -71,6 +71,15 @@ class DatabaseObject {
       $data[] = $row;
     }
     return $data;
+  }
+  
+  /**
+   * Выполняет обработку строки для обезопасивания перед вставкой в sql запрос
+   * @param string $str
+   * @return string
+   */
+  public function getSafetyString($str) {
+    return $this->mysqli->real_escape_string($str);
   }
   
   /**
