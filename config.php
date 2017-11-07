@@ -20,6 +20,9 @@ ini_set("session.use_trans_sid", true); // поддержка использов
 ini_set('display_errors', 'On'); // показывать ошибки - на готовом продукте убрать
 date_default_timezone_set('Asia/Krasnoyarsk'); // установка временной зоны для скриптов
 
+// настройки сайта
+define("ST_NAME", 'VkInviter'); // название сайта
+
 // подключение файла с секретными настройками
 $secretFileName = __DIR__ . '/secret.php';
 if (file_exists($secretFileName)) {

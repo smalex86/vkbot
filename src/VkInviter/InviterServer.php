@@ -17,7 +17,9 @@ class InviterServer extends Server {
   private $accountList;
   
   public function __construct() {
-    $this->logger = $this->getLogger();
+    parent::__construct();
+    $this->namespace = __NAMESPACE__;
+    $this->getSession();
   }
   
   public function getAccountList() {
@@ -30,43 +32,7 @@ class InviterServer extends Server {
       }
     }
     return $this->accountList;
-  }
-
-  /**
-   * Метод для обработки пост-данных
-   * @return boolean
-   */
-  public function startActionManager() {
-    if ($_POST) {
-      foreach ($_POST as $field => $value) {
-        $this->logger->debugD(__FILE__.'('.__LINE__.'): Данные = '.var_export($value, true));
-        if (is_array($value)) {
-          // подключение требуемой библиотеки
-          $className = __NAMESPACE__ . '\\' . $field;
-          $this->logger->debugD(__FILE__.'('.__LINE__.'): Класс = '.$className);
-          $this->logger->debugD(__FILE__.'('.__LINE__.'): class exists = '.class_exists($className)); 
-          if (class_exists($className)) {
-            $obj = new $className;
-            if ($obj && method_exists($obj, 'processAction')) {
-              $obj->processAction($value);
-            } else {
-              $this->logger->warningD(__FILE__.'('.__LINE__.'): Класс '.$className.
-                      ' не имеет метода processAction, данные ('.var_export($value, true).
-                      ') не будут обработаны');
-            }
-          } else {
-            $this->logger->warningD(__FILE__.'('.__LINE__.'): Класс '.$className.
-                    ' не найден, данные ('.var_export($value, true).
-                    ') не будут обработаны');
-          }
-        }
-      }
-      // чтобы снова не вызывался обработчик массива пост, очищаем его
-      header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-    }
-    return FALSE;
-  }
-  
+  }  
   
   /**
    * метод для проверки существования токена

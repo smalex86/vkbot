@@ -24,6 +24,7 @@ class Session {
   protected $logger;
 
   public function __construct(Logger $logger) {
+    session_start();
     $this->logger = $logger;
   }
   

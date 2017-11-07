@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Smalex86\VkInviter;
+namespace Smalex86\VkInviter\Model;
 
 use Smalex86\Common\ActiveRecord;
 

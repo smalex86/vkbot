@@ -21,15 +21,12 @@ $logger->toLogD(3, __FILE__ . ' : ' . __LINE__ . ' -- GET = ' . var_export($_GET
 $logger->toLogD(3, __FILE__ . ' : ' . __LINE__ . ' -- file_get_contents = ' 
         . var_export(file_get_contents("php://input"), true), 'getpost.log');
 
-session_start();
-
 $application = new inviterServer(); // создание сервера
 $application->startActionManager(); // запуск обработки пост-данных
-$application->getSession()->checkPostData(); // проверка на наличие данных оставленных после неудачной пост обработки
+$application->getPageController(); // запуск процедуры поиска и создания контроллера страницы
 
-include('templates/main/index.php');
-//include('templates/dashboard/index.php');
-
+//include('templates/main/index.php');
+include('templates/dashboard/index.php');
 
 /* --------------------------------------- Работа с токеном -------------- */
 

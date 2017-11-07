@@ -9,23 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Smalex86\VkInviter;
+namespace Smalex86\VkInviter\Controller\Page;
 
-use Smalex86\VkInviter\VkAccountMapper;
+use Smalex86\Common\Controller;
+use Smalex86\VkInviter\Model\VkAccountMapper;
 
 /**
- * Description of VkAccountList
+ * Description of VkAccount
  *
  * @author Alexandr Smirnov
  */
-class VkAccountList {
-  
-  private $logger;
-  private $mapper;
+class VkAccount extends Controller {
   
   public function __construct() {
-    global $application;
-    $this->logger = $application->getLogger();
     $this->mapper = new VkAccountMapper();
   }
   
@@ -112,6 +108,18 @@ class VkAccountList {
   function getNewTokenQuery($code) {
     return sprintf('https://oauth.vk.com/access_token?client_id=%s&client_secret=%s&'
             . 'redirect_uri=%s&code=%s', VK_CLIENT_ID, VK_CLIENT_SECRET, VK_REDIRECT_URI, $code);
+  }
+  
+  public function getTitle() {
+    return 'Аккаунты ВКонтакте';
+  }
+  
+  public function getBody() {
+    $data = '<h3>Подключенные аккаунты</h3>';
+    $data .= $this->getAccountListHtml();
+    $data .= '<h3>Подключение аккаунта</h3>';
+    $data .= $this->getAccountAddFormHtml();
+    return $data;
   }
   
 }

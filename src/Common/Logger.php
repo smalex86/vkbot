@@ -49,15 +49,15 @@ class Logger {
       $logFileName = self::$logfileDefault;
     }
     switch ($msgStatus) {
-      case 0: $msgStatusWord =  'IMPORTANT INFO';
+      case 0: $msgStatusWord =  'IMPORTANT';
         break;
-      case 1: $msgStatusWord =  'ERROR         ';
+      case 1: $msgStatusWord =  'ERROR    ';
         break;
-      case 2: $msgStatusWord =  'WARNING       ';
+      case 2: $msgStatusWord =  'WARNING  ';
         break;
-      case 3: $msgStatusWord =  'DEBUG INFO    ';
+      case 3: $msgStatusWord =  'DEBUG    ';
         break;
-      default: $msgStatusWord = 'UNKNOWN INFO  ';
+      default: $msgStatusWord = 'UNKNOWN  ';
     }
     // записываем сообщение в файл
     return file_put_contents(realpath(self::$folder).'/'.$logFileName, 

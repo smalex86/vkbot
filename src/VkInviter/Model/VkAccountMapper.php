@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Smalex86\VkInviter;
+namespace Smalex86\VkInviter\Model;
 
 use Smalex86\Common\DataMapper;
-use Smalex86\VkInviter\VkAccount;
+use Smalex86\VkInviter\Model\VkAccount;
 
 /**
  * Description of VkAccountMapper

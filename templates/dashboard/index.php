@@ -6,17 +6,17 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="keywords" content="">
-  <meta name="rights" content="<?php echo $application->sitename ?>">
+  <meta name="rights" content="<?php echo ST_NAME; ?>">
   <meta name="author" content="Alexander Smirnov">
   <meta name="description" content="">
   <title><?php echo $application->getPageTitle() ?></title>
-  <link href="templates/image/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
-  <link rel="stylesheet" href="templates/css/bootstrap.css" type="text/css">
-  <link rel="stylesheet" href="templates/css/dashboard.css" type="text/css">
-  <link rel="stylesheet" href="templates/css/index.css" type="text/css">
+  <link href="templates/dashboard/image/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
+  <link rel="stylesheet" href="templates/dashboard/css/bootstrap.css" type="text/css">
+  <link rel="stylesheet" href="templates/dashboard/css/dashboard.css" type="text/css">
+  <link rel="stylesheet" href="templates/dashboard/css/index.css" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-  <script src="templates/js/bootstrap.js" type="text/javascript"></script>
-  <script src="templates/js/bootstrap-wysiwyg.js" type="text/javascript"></script>
+  <script src="templates/dashboard/js/bootstrap.js" type="text/javascript"></script>
+  <script src="templates/dashboard/js/bootstrap-wysiwyg.js" type="text/javascript"></script>
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -26,7 +26,7 @@
 
 <body>
 	
-  <?php if($application->getUserAccessLevel() == 10) : ?>
+  <?php if(/*$application->getUserAccessLevel() == 10*/true) : ?>
 
   <!-- Nav -->
   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -38,7 +38,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.php"><?php echo $application->sitename ?></a>
+        <a class="navbar-brand" href="index.php"><?php echo ST_NAME; ?></a>
       </div>
       <div class="collapse navbar-collapse">
         <?php // echo $application->getMenu('main'); ?>
