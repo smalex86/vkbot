@@ -20,12 +20,36 @@ abstract class Controller {
   
   protected $logger = null;
   protected $mapper = null;
+  protected $record = null;
+  
+  protected $alias = '';
 
-  public function __construct() {
+  public function __construct($alias = '') {
     global $application;
     $this->logger = $application->getLogger();
+    if ($alias) {
+      $this->alias = $alias;
+    }
   }
   
+  /**
+   * Метод возвращает алиас контроллера
+   */
+  public function getAlias() {
+    return $this->alias;
+  }
+
+  /**
+   * Метод возвращает DataMapper контроллера
+   */
+  abstract protected function getMapper();
+
+  /**
+   * Метод возвращает ActiveRecord контроллера
+   */
+  abstract protected function getRecord();
+
+
   /**
    * Метод возвращающий заголовок страницы\компонента\меню, который не входит в состав body
    */

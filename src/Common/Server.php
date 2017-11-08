@@ -24,6 +24,8 @@ class Server {
   protected $session = null; // поле для хранения указателя на объект сессии
   protected $database = null; // поле для хранения указателя на объект для работы с базой данных
   protected $controller = null; // controller текущей страницы, из него осуществляется доступ к странице
+  protected $menuControllers = array(); // массив контроллеров меню страницы
+  protected $componentControllers = array(); // массив контроллеров компонентов страницы
   
   protected $namespace = null; // хранит namespace, поле необходимо чтобы после 
                                // переопределения методов корректно работали ссылки
@@ -96,21 +98,68 @@ class Server {
       return 'main';
     }
   }
+  
+  /**
+   * Метод формирует действие текущей страницы по значениям параметров GET
+   * В базовом варианте обрабатывается два варианта:
+   *  1. Возвращается $_GET['action'] если он существует
+   *  2. Возвращается 'view' если $_GET['action'] не существует
+   * @return string
+   */
+  protected function getPageAction() {
+    if (isset($_GET['action'])) {
+      return $_GET['action'];
+    } else {
+      return 'view';
+    }
+  }
 
+  /**
+   * Метод выполняет поиск контроллера от типа, алиаса и действия
+   * @param string $type
+   * @param string $alias
+   * @param string $action
+   * @return Controller возвращается объект контроллера
+   */
+  protected function getController($type, $alias, $action = 'view') {
+    // сначала выполняем поиск контроллеров с динамическим содержимым
+    $controllerClassFinder = new ControllerFinder($this->getLogger(), $this->getDatabase());
+    if (!$controllerClassFinder) {
+      $this->logger->errorD(__FILE__.'('.__LINE__.'): Ошибка при создании объекта ControllerFinder');
+      return null;
+    }
+    switch ($type) {
+      case 'page':
+        $className = $controllerClassFinder->getPageClass($alias, $action);
+        break;
+      case 'component':
+        $className = $controllerClassFinder->getComponentClass($alias, $action);
+        break;
+      case 'menu':
+        $className = $controllerClassFinder->getMenuClass($alias, $action); 
+        break;
+    }   
+    // если такой класс в таблице контроллеров не зарегистрирован, то обращаемся к контроллеру со 
+    // статическим содержимым
+    if (!$className) {
+      $className = 'Smalex86\\Common\\Controller\\Page\\StaticController';
+    }    
+    if (class_exists($className)) {
+      return new $className($alias);
+    } else {
+      $this->logger->errorD(__FILE__.'('.__LINE__.'): Файл с контроллером (type='.$type.
+              ', alias='.$alias.') класса ' .$className.' не найден');
+      return null;
+    }
+  }
+  
   /**
    * Метод выполняет поиск и создание объекта pageController по параметрам строки GET
    * @return Controller
    */
   public function getPageController() {
     if (!$this->controller) {
-      $controllerClassFinder = new ControllerFinder($this->getLogger(), $this->getDatabase());
-      $className = $controllerClassFinder->getPageClass($this->getPageAlias());
-      if (class_exists($className)) {
-        $this->controller = new $className;
-      } else {
-        $this->logger->errorD(__FILE__.'('.__LINE__.'): Файл с контроллером класса '.$className.' не найден');
-        return null;
-      }
+      $this->controller = $this->getController('page', $this->getPageAlias(), $this->getPageAction());
     } 
     return $this->controller;
   }
@@ -131,8 +180,49 @@ class Server {
     return $this->getPageController()->getBody();
   }
   
-  public function getComponent() {
-    return '';
+  /**
+   * Метод возвращает содержимое компонента
+   * @param string $alias алиас требуемого компонента
+   * @param array of string $pages обозначает на страницах с какими алиасами выводить компонент
+   * @param boolean $inverse если true, то будет выводить компонент на всех страницах кроме $pages
+   * @param int $position дополнительный параметр компонента
+   * @return string
+   */
+  public function getComponent($alias, $pages = array(), $inverse = false, $position = 0) {
+    //проверить введен ли массив страниц
+    if ($pages) {
+      // если введен, то проверить не входит ли текущая страница в этот массив + inverse
+      if (!(in_array($this->getPageAlias(), $pages) xor $inverse)) {
+        return '';
+      }
+    }
+    // если уже существует массив в контроллерами компонентов, выполнить поиск среди них
+    $componentController = null;
+    if (count($this->componentControllers)) {
+      foreach ($this->componentControllers as $controller) {
+        // если найден контроллер с таким алиасом, то запоминает его и выходим из цикла
+        if ($controller->getAlias() == $alias) {
+          $componentController = $controller;
+          break;
+        }
+      }
+    } 
+    // если контроллер в массиве не найден, то вызываем поиск контроллера
+    if (!$componentController) {
+      $componentController = $this->getController('component', $alias);
+      // если контроллер найден и создан, то добавляем его в массив контроллеров компонентов
+      if ($componentController) {
+        $this->componentControllers[] = $componentController;
+      }
+    }
+    // проверяем найден ли контроллер, если нет - на выход, если да - запросить содержимое
+    if ($componentController) {
+      return $componentController->getBody();
+    } else {
+      $this->logger->warningD(__FILE__.'('.__LINE__.'): Не найден контроллер компонента alias='
+              .$alias);
+      return '';
+    }    
   }
   
   public function getMenu() {

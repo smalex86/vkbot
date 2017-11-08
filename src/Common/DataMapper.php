@@ -11,9 +11,7 @@
 
 namespace Smalex86\Common;
 
-use Smalex86\Common\Logger;
-use Smalex86\Common\Database;
-use Smalex86\Common\Session;
+use Smalex86\Common\ActiveRecord;
 
 /**
  * Description of DataMapper

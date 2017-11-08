@@ -58,8 +58,8 @@ class ControllerFinder {
    * @param string $alias алиас страницы
    * @return string|null
    */
-  public function getPageClass($alias) {
-    return $this->getClassByAliasController('page', $alias);
+  public function getPageClass($alias, $action = 'view') {
+    return $this->getClassByAliasController('page', $alias, $action);
   }
 
   /**
@@ -67,8 +67,8 @@ class ControllerFinder {
    * @param string $alias алиас страницы
    * @return string|null
    */  
-  public function getComponentClass($alias) {
-    return $this->getClassByAliasController('component', $alias);
+  public function getComponentClass($alias, $action = 'view') {
+    return $this->getClassByAliasController('component', $alias, $action);
   }
   
   /**
@@ -76,8 +76,8 @@ class ControllerFinder {
    * @param string $alias алиас страницы
    * @return string|null
    */
-  public function getMenuClass($alias) {
-    return $this->getClassByAliasController('menu', $alias);
+  public function getMenuClass($alias, $action = 'view') {
+    return $this->getClassByAliasController('menu', $alias, $action);
   }
   
 }

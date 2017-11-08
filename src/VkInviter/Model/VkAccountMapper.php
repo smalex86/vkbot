@@ -43,7 +43,7 @@ class VkAccountMapper extends DataMapper {
     $query = sprintf('select * from %s where vkaid = %u limit 1', $this->getTableName(), $id);
     $row = $this->database->selectSingleRow($query, __FILE__.':'.__LINE__);
     if ($row) {
-      return VkAccount::newAccount($row['vkaid'], $row['password'], $row['access_token'], 
+      return VkAccount::newRecord($row['vkaid'], $row['password'], $row['access_token'], 
                 $row['expire_date']);
     }
     return null;
@@ -60,7 +60,7 @@ class VkAccountMapper extends DataMapper {
       $list = array();
       if ($rows) {
         foreach ($rows as $value) {
-          $list[] = VkAccount::newAccount($value['vkaid'], $value['password'], 
+          $list[] = VkAccount::newRecord($value['vkaid'], $value['password'], 
                   $value['access_token'], $value['expire_date']);
         }
       }

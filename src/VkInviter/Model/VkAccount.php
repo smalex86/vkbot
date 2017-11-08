@@ -33,7 +33,7 @@ class VkAccount extends ActiveRecord {
    * @param int $expireDate
    * @return \Smalex86\VkInviter\VkAccount
    */
-  static public function newAccount($vkaid, $password, $accessToken, $expireDate) {
+  static public function newRecord($vkaid, $password, $accessToken, $expireDate) {
     $account = new VkAccount;
     $account->vkaid = $vkaid;
     $account->password = $password;

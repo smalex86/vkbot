@@ -27,4 +27,6 @@ abstract class ActiveRecord {
     $this->logger = $application->getLogger();
   }
   
+  //abstract static public function newRecord();
+  
 }

@@ -21,8 +21,22 @@ use Smalex86\VkInviter\Model\VkAccountMapper;
  */
 class VkAccount extends Controller {
   
-  public function __construct() {
-    $this->mapper = new VkAccountMapper();
+  public function __construct($alias = '') {
+    parent::__construct($alias);
+  }
+  
+  protected function getRecord() {
+//    if (!$this->record) {
+//      $this->record = $this->getMapper()->getByAlias($this->getAlias());
+//    }
+//    return $this->record;
+  }
+  
+  protected function getMapper() {
+    if (!$this->mapper) {
+      $this->mapper = new VkAccountMapper();
+    }
+    return $this->mapper;
   }
   
   /**
@@ -31,7 +45,7 @@ class VkAccount extends Controller {
    */
   public function getAccountListHtml() {
     $data = '';
-    $list = $this->mapper->getList();
+    $list = $this->getMapper()->getList();
     if ($list) {
       $data .= '<table class="table table-bordered">';
       $data .= '<tr>';
