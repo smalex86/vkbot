@@ -23,7 +23,7 @@ $logger->toLogD(3, __FILE__ . ' : ' . __LINE__ . ' -- file_get_contents = '
 
 $application = new inviterServer(); // создание сервера
 $application->startActionManager(); // запуск обработки пост-данных
-$application->getPageController(); // запуск процедуры поиска и создания контроллера страницы
+$application->startPageBuilder(); // запуск построения страницы
 
 //include('templates/main/index.php');
 include('templates/dashboard/index.php');

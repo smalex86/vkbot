@@ -142,8 +142,18 @@ class Server {
     // если такой класс в таблице контроллеров не зарегистрирован, то обращаемся к контроллеру со 
     // статическим содержимым
     if (!$className) {
-      $className = 'Smalex86\\Common\\Controller\\Page\\StaticController';
-    }    
+      switch ($type) {
+        case 'page':
+          $className = 'Smalex86\\Common\\Controller\\Page\\StaticController';
+          break;
+        case 'component':
+          $className = 'Smalex86\\Common\\Controller\\Component\\StaticController';
+          break;
+        case 'menu':
+          $className = 'Smalex86\\Common\\Controller\\Menu\\StaticController';
+          break;
+      }
+    }       
     if (class_exists($className)) {
       return new $className($alias);
     } else {
@@ -157,7 +167,7 @@ class Server {
    * Метод выполняет поиск и создание объекта pageController по параметрам строки GET
    * @return Controller
    */
-  public function getPageController() {
+  protected function getPageController() {
     if (!$this->controller) {
       $this->controller = $this->getController('page', $this->getPageAlias(), $this->getPageAction());
     } 
@@ -181,14 +191,15 @@ class Server {
   }
   
   /**
-   * Метод возвращает содержимое компонента
+   * Универсальный метод для получения содержимого компонентов, меню и прочих объектов страницы
+   * @param string $type тип компонента: component, menu
    * @param string $alias алиас требуемого компонента
    * @param array of string $pages обозначает на страницах с какими алиасами выводить компонент
    * @param boolean $inverse если true, то будет выводить компонент на всех страницах кроме $pages
    * @param int $position дополнительный параметр компонента
    * @return string
    */
-  public function getComponent($alias, $pages = array(), $inverse = false, $position = 0) {
+  protected function getAnyComponent($type, $alias, $pages = array(), $inverse = false, $position = 0) {
     //проверить введен ли массив страниц
     if ($pages) {
       // если введен, то проверить не входит ли текущая страница в этот массив + inverse
@@ -209,7 +220,7 @@ class Server {
     } 
     // если контроллер в массиве не найден, то вызываем поиск контроллера
     if (!$componentController) {
-      $componentController = $this->getController('component', $alias);
+      $componentController = $this->getController($type, $alias);
       // если контроллер найден и создан, то добавляем его в массив контроллеров компонентов
       if ($componentController) {
         $this->componentControllers[] = $componentController;
@@ -219,14 +230,40 @@ class Server {
     if ($componentController) {
       return $componentController->getBody();
     } else {
-      $this->logger->warningD(__FILE__.'('.__LINE__.'): Не найден контроллер компонента alias='
-              .$alias);
       return '';
-    }    
+    }
   }
   
-  public function getMenu() {
-    return '';
+  /**
+   * Метод возвращает содержимое компонента
+   * @param string $alias алиас требуемого компонента
+   * @param array of string $pages обозначает на страницах с какими алиасами выводить компонент
+   * @param boolean $inverse если true, то будет выводить компонент на всех страницах кроме $pages
+   * @param int $position дополнительный параметр компонента
+   * @return string
+   */
+  public function getComponent($alias, $pages = array(), $inverse = false, $position = 0) {
+    return $this->getAnyComponent('component', $alias, $pages, $inverse, $position);
+  }
+  
+  /**
+   * Метод возвращает содержимое меню
+   * @param string $alias алиас требуемого компонента
+   * @param array of string $pages обозначает на страницах с какими алиасами выводить компонент
+   * @param boolean $inverse если true, то будет выводить компонент на всех страницах кроме $pages
+   * @return type
+   */
+  public function getMenu($alias, $pages = array(), $inverse = false) {
+    return $this->getAnyComponent('menu', $alias, $pages, $inverse);
+  }
+  
+  /**
+   * Метод выполняет команды необходимые для запуска построения страницы.
+   * Вынесен за пределы конструктора, потому что многие объекты при создании обращаются к 
+   * объекту Server application, который уже должен быть создан на момент их вызова
+   */
+  public function startPageBuilder() {
+    $this->getPageController(); // поиск и создание контроллера страниц
   }
   
   /**

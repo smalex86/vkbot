@@ -22,6 +22,8 @@ abstract class Controller {
   protected $mapper = null;
   protected $record = null;
   
+  protected $mapperClass = '';
+
   protected $alias = '';
 
   public function __construct($alias = '') {

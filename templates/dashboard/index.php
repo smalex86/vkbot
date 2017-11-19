@@ -41,8 +41,8 @@
         <a class="navbar-brand" href="index.php"><?php echo ST_NAME; ?></a>
       </div>
       <div class="collapse navbar-collapse">
-        <?php // echo $application->getMenu('main'); ?>
-        <?php echo $application->getComponent('usermenu'); ?>
+        <?php echo $application->getMenu('main'); ?>
+        <?php //echo $application->getComponent('usermenu'); ?>
       </div>
     </div>
   </div> <!-- Nav -->    
@@ -60,6 +60,7 @@
       <!-- content -->
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <?php echo $application->getPageContent(); ?>	
+        <?php echo $application->getComponent('formCallback'); ?>
         <!--<?php //if ((include "plugins/tinymce/index.php") == 'OK') : ?>	
         <form method="post">
                         <textarea>Проверка проверка</textarea>
@@ -73,7 +74,7 @@
     <p><center><strong>Необходимо выполнить вход под учетной записью администратора</center></strong></p>
     <div class="container" style="max-width: 330px;">
       <?php echo $application->getMsgHTML() ?>
-      <?php echo $application->getComponent('user', array('user'), true); ?>
+      <?php //echo $application->getComponent('user', array('user'), true); ?>
     </div>
   <?php endif; ?>
 </body>

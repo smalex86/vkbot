@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Smalex86\Common\Controller\Page;
+namespace Smalex86\Common\Controller\Menu;
 
 use Smalex86\Common\Controller;
-use Smalex86\Common\Model\StaticPageMapper;
+use Smalex86\Common\Model\StaticMenuMapper;
 
 /**
  * Description of Static
@@ -20,7 +20,7 @@ use Smalex86\Common\Model\StaticPageMapper;
  * @author Alexandr Smirnov
  */
 class StaticController extends Controller {
-
+  
   public function __construct($alias = '') {
     parent::__construct($alias);
   }
@@ -34,28 +34,25 @@ class StaticController extends Controller {
   
   protected function getMapper() {
     if (!$this->mapper) {
-      $this->mapper = new StaticPageMapper;
+      $this->mapper = new StaticMenuMapper;
     }
     return $this->mapper;
   }
   
   public function getBody() {
     if ($this->getRecord()) {
-      $data = '<div class="page-header">';
-      $data .= sprintf('<h1>%s</h1>', $this->getRecord()->pageName);
-      $data .= '</div>';
-      $data .= $this->getRecord()->pageText;
+      $data = $this->getRecord()->getMenu();
     } else {
-      $data = 'Запрашиваемая страница не найдена';
+      $data = 'Запрашиваемое меню не найдено';
     }
     return $data;
   }
   
   public function getTitle() {
     if ($this->getRecord()) {
-      return $this->getRecord()->pageTitle;
+      return $this->getRecord()->name;
     }
-    return 'Страница не найдена';
+    return 'Меню не найдено';
   }
   
 }

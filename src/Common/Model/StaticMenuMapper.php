@@ -12,28 +12,27 @@
 namespace Smalex86\Common\Model;
 
 use Smalex86\Common\DataMapper;
-use Smalex86\Common\Model\StaticPage;
+use Smalex86\Common\Model\StaticMenu;
 
 /**
- * Description of StaticPageMapper
+ * Description of StaticMenuMapper
  *
  * @author Александр
  */
-class StaticPageMapper extends DataMapper {
+class StaticMenuMapper extends DataMapper {
   
    /**
    * метод возвращает название таблицы данных
    */
   protected function getTableName() {
-    return 'page';
+    return 'menu';
   }
   
   /**
    * возвращает список полей таблицы
    */
   protected function getFields() {
-    return array('pid', 'psid', 'pagealias', 'pagelink', 'pagetitle', 'pagename', 'pageteaser', 
-        'pagetext', 'public_date', 'published');
+    return array();
   }
   
   /**
@@ -52,12 +51,17 @@ class StaticPageMapper extends DataMapper {
   
   public function getByAlias($alias) {
     $alias = $this->database->getSafetyString($alias);
-    $query = sprintf('select * from %s where pagealias = "%s" limit 1', $this->getTableName(), $alias);
+    $query = sprintf('select * from %s where alias = "%s" limit 1', $this->getTableName(), $alias);
     $row = $this->database->selectSingleRow($query, __FILE__.':'.__LINE__);
-    if ($row) {
-      return StaticPage::newRecord($row['pid'], $row['psid'], $row['pagealias'], $row['pagelink'], 
-              $row['pagetitle'], $row['pagename'], $row['pageteaser'], $row['pagetext'], 
-              $row['public_date'], $row['published']);
+    if ($row && isset($row['mid'])) {
+      // загрузить пункты меню
+      $query = sprintf('select * from menu_item where mid = %u', $row['mid']);
+      $items = $this->database->selectMultipleRows($query, __FILE__.':'.__LINE__);
+      if (is_array($items)) {
+        return StaticMenu::newRecord($row['mid'], $row['name'], $row['alias'], $row['template'], 
+                $row['type'], $items);
+      }
+      return null;
     }
     return null;
   }
